@@ -15,12 +15,18 @@ def upload_to_catbox(file_path):
     try:
         with open(file_path, "rb") as f:
             files = {"fileToUpload": f}
-            response = requests.post(url, data=data, files=files, timeout=40)
+            print("Uploading to Catbox... Please wait.") # Progress indicator
+            response = requests.post(url, data=data, files=files, timeout=60) # Timeout 60s kiya
+        
         if response.status_code == 200:
             return response.text
-        return None
+        else:
+            # Galti yahan pakdi jayegi
+            print(f"Catbox Error Code: {response.status_code}")
+            print(f"Catbox Response: {response.text}")
+            return None
     except Exception as e:
-        print(f"Catbox Upload Failed: {e}")
+        print(f"Catbox Upload Failed (Exception): {e}")
         return None
 
 def main():
