@@ -252,19 +252,41 @@ def run_automation():
     print(f"Generated Caption: {selected_caption}")
 
     # 4. SEND TO TELEGRAM
-    if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
-        print("Sending to Telegram...")
-        with open(video_path, 'rb') as video_file:
-            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendVideo"
-            payload = {
-                'chat_id': TELEGRAM_CHAT_ID, 
-                'caption': full_telegram_caption
-            }
-            files = {'video': video_file}
-            try:
-                requests.post(url, data=payload, files=files)
-            except Exception as e:
-                print(f"Telegram Error: {e}")
+if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
+    print("Sending to Telegram...")
+    
+    # URL print karke dekhein ki token sahi jagah laga hai ya nahi
+    # (Security ke liye baad mein hata dena)
+    # print(f"Using Token: {TELEGRAM_BOT_TOKEN[:5]}...") 
+
+    with open(video_path, 'rb') as video_file:
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendVideo"
+        
+        payload = {
+            'chat_id': TELEGRAM_CHAT_ID, 
+            'caption': full_telegram_caption,
+            'parse_mode': 'HTML'  # Optional: Formatting ke liye
+        }
+        
+        files = {'video': video_file}
+        
+        try:
+            # Mistake Fixed: Response ko variable mein save kiya
+            response = requests.post(url, data=payload, files=files, timeout=60)
+            
+            # Ab check karein ki request pass hui ya fail
+            if response.status_code == 200:
+                print("✅ Telegram Message Sent Successfully!")
+                print(response.json()) # Success response print karein
+            else:
+                print(f"❌ Failed to send message. Status Code: {response.status_code}")
+                print(f"Reason: {response.text}") # Ye line aapko exact error batayegi
+                
+        except Exception as e:
+            print(f"Telegram Connection Error: {e}")
+else:
+    print("❌ Error: Telegram Token or Chat ID is missing.")
+    
 
     # 5. SEND TO WEBHOOK
     if WEBHOOK_URL:
