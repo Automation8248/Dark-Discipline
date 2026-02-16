@@ -223,6 +223,7 @@ def run_automation():
     save_history(new_history)
     history = new_history 
 
+    
     # 2. PICK NEW VIDEO
     if not os.path.exists(VIDEO_FOLDER):
         os.makedirs(VIDEO_FOLDER)
