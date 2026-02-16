@@ -7,7 +7,9 @@ import datetime
 # --- CONFIGURATION ---
 VIDEO_FOLDER = "videos"
 HISTORY_FILE = "history.json"
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
+
+# Variable ka naam badal diya hai (TELEGRAM_BOT_TOKEN -> TELEGRAM_TOKEN)
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 WEBHOOK_URL = os.environ.get("WEBHOOK_URL")
 
