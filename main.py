@@ -1,0 +1,300 @@
+import os
+import json
+import random
+import requests
+import datetime
+
+# --- CONFIGURATION ---
+VIDEO_FOLDER = "videos"
+HISTORY_FILE = "history.json"
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+WEBHOOK_URL = os.environ.get("WEBHOOK_URL")
+
+# Yahan maine image se dekh kar aapka exact Repo Name daal diya hai
+GITHUB_REPO = "Automation8248/offernix-page-" 
+BRANCH_NAME = "main"
+
+# --- DATA GRID (Pre-saved Titles & Captions) ---
+
+# List 1: Titles (Har bar inme se koi ek randomly select hoga)
+TITLES_GRID = [
+    "Discipline Will Take You Where Motivation Can’t",
+    "Nobody Is Coming — Build Yourself",
+    "Do It Even When You Don’t Feel Like It",
+    "Your Future Is Watching You Right Now",
+    "Comfort Is The Enemy Of Growth",
+    "Small Steps Every Day Win",
+    "You Either Suffer Now Or Regret Later",
+    "Consistency Beats Talent Every Time",
+    "Become Someone You’d Respect",
+    "Work In Silence Let Results Talk",
+    "The Hard Path Builds Strong People",
+    "Excuses Make Today Easy But Tomorrow Hard",
+    "Focus On Progress Not Perfection",
+    "Make Yourself Proud",
+    "One Year Of Focus Can Change Your Life",
+    "No One Will Believe Until It Works",
+    "Your Habits Decide Your Future",
+    "Don’t Wish For It Train For It",
+    "You’re Closer Than You Think",
+    "Action Ends Overthinking",
+    "Success Loves Daily Effort",
+    "The Pain Of Discipline Is Temporary",
+    "Dreams Demand Sacrifice",
+    "Pressure Creates Diamonds",
+    "Win The Morning Win The Day",
+    "Be Stronger Than Your Excuses",
+    "Growth Begins With Discomfort",
+    "Late Nights Early Wins",
+    "You Owe Yourself More",
+    "Today Is A Fresh Start",
+    "Keep Going Nobody Sees Your Struggle",
+    "Results Need Repetition",
+    "Average Is A Choice",
+    "Your Mind Is Your Limit",
+    "Outwork Your Old Self",
+    "Prove Yourself Right",
+    "Fear Means You’re Growing",
+    "Show Up Every Single Day",
+    "Turn Pain Into Power",
+    "Build Not Complain",
+    "Success Is Built Quietly",
+    "Stay Patient Stay Consistent",
+    "Hustle Now Relax Later",
+    "The Grind Will Pay Off",
+    "Nothing Changes If Nothing Changes",
+    "Your Only Competition Is Yesterday You",
+    "Do Hard Things Often",
+    "Stop Waiting Start Doing",
+    "You Can Handle Hard Things",
+    "Greatness Requires Boring Repetition",
+    "The Work You Avoid Controls You",
+    "Decide Commit Succeed",
+    "No Zero Days",
+    "Earn Your Confidence",
+    "Progress Requires Effort",
+    "Strong Mind Strong Life",
+    "Motivation Follows Action",
+    "Finish What You Started",
+    "Discomfort Is A Sign Of Growth",
+    "Push Past Average",
+    "Future You Will Thank You",
+    "Train Your Mind Daily",
+    "Keep The Promise To Yourself",
+    "Do More Than Expected",
+    "Stay Hungry Stay Humble",
+    "Make Discipline Attractive",
+    "One More Rep In Life",
+    "Focus Beats Talent",
+    "Hard Work Looks Like Luck",
+    "Your Time Is Now"
+]
+
+
+
+# List 2: Captions (Har bar inme se koi ek randomly select hoga)
+CAPTIONS_GRID = [
+    "Discipline Will Take You Where Motivation Can’t",
+    "Nobody Is Coming — Build Yourself",
+    "Do It Even When You Don’t Feel Like It",
+    "Your Future Is Watching You Right Now",
+    "Comfort Is The Enemy Of Growth",
+    "Small Steps Every Day Win",
+    "You Either Suffer Now Or Regret Later",
+    "Consistency Beats Talent Every Time",
+    "Become Someone You’d Respect",
+    "Work In Silence Let Results Talk",
+    "The Hard Path Builds Strong People",
+    "Excuses Make Today Easy But Tomorrow Hard",
+    "Focus On Progress Not Perfection",
+    "Make Yourself Proud",
+    "One Year Of Focus Can Change Your Life",
+    "No One Will Believe Until It Works",
+    "Your Habits Decide Your Future",
+    "Don’t Wish For It Train For It",
+    "You’re Closer Than You Think",
+    "Action Ends Overthinking",
+    "Success Loves Daily Effort",
+    "The Pain Of Discipline Is Temporary",
+    "Dreams Demand Sacrifice",
+    "Pressure Creates Diamonds",
+    "Win The Morning Win The Day",
+    "Be Stronger Than Your Excuses",
+    "Growth Begins With Discomfort",
+    "Late Nights Early Wins",
+    "You Owe Yourself More",
+    "Today Is A Fresh Start",
+    "Keep Going Nobody Sees Your Struggle",
+    "Results Need Repetition",
+    "Average Is A Choice",
+    "Your Mind Is Your Limit",
+    "Outwork Your Old Self",
+    "Prove Yourself Right",
+    "Fear Means You’re Growing",
+    "Show Up Every Single Day",
+    "Turn Pain Into Power",
+    "Build Not Complain",
+    "Success Is Built Quietly",
+    "Stay Patient Stay Consistent",
+    "Hustle Now Relax Later",
+    "The Grind Will Pay Off",
+    "Nothing Changes If Nothing Changes",
+    "Your Only Competition Is Yesterday You",
+    "Do Hard Things Often",
+    "Stop Waiting Start Doing",
+    "You Can Handle Hard Things",
+    "Greatness Requires Boring Repetition",
+    "The Work You Avoid Controls You",
+    "Decide Commit Succeed",
+    "No Zero Days",
+    "Earn Your Confidence",
+    "Progress Requires Effort",
+    "Strong Mind Strong Life",
+    "Motivation Follows Action",
+    "Finish What You Started",
+    "Discomfort Is A Sign Of Growth",
+    "Push Past Average",
+    "Future You Will Thank You",
+    "Train Your Mind Daily",
+    "Keep The Promise To Yourself",
+    "Do More Than Expected",
+    "Stay Hungry Stay Humble",
+    "Make Discipline Attractive",
+    "One More Rep In Life",
+    "Focus Beats Talent",
+    "Hard Work Looks Like Luck",
+    "Your Time Is Now"
+]
+
+
+
+# List 3: Fixed Hashtags (Ye har video me SAME rahega)
+FIXED_HASHTAGS = """
+.
+.
+.
+.
+.
+#motivation #selfimprovement #discipline #successmindset #personaldevelopment #growthmindset #mindsetmatters #workethic #stayfocused #nevergiveup #grindmode #hustle #dailygrind #consistency #hardwork #dreambig #goalsetting #levelup #winnersmindset #positivemindset #mentalstrength #focusonyourself #keepgoing #dontquit #believeinyourself #confidenceboost #morningmotivation #lifemotivation #inspirationdaily #motivationalvideo #viral #trending #fyp #foryou #shorts #youtubeshorts #ytshorts #reels #viralreels #shortvideo """
+# Isse AFFILIATE_HASHTAGS se badal kar INSTA_HASHTAGS kar diya hai
+INSTA_HASHTAGS = """
+.
+.
+.
+.
+"#motivation #selfimprovement #discipline #successmindset #personaldevelopment"
+"""
+
+# --- HELPER FUNCTIONS ---
+
+def load_history():
+    if not os.path.exists(HISTORY_FILE):
+        return []
+    with open(HISTORY_FILE, 'r') as f:
+        return json.load(f)
+
+def save_history(data):
+    with open(HISTORY_FILE, 'w') as f:
+        json.dump(data, f, indent=4)
+
+# --- MAIN LOGIC ---
+
+def run_automation():
+    # 1. DELETE OLD FILES (15 Days Logic)
+    history = load_history()
+    today = datetime.date.today()
+    new_history = []
+    
+    print("Checking for expired videos...")
+    for entry in history:
+        sent_date = datetime.date.fromisoformat(entry['date_sent'])
+        days_diff = (today - sent_date).days
+        
+        file_path = os.path.join(VIDEO_FOLDER, entry['filename'])
+        
+        if days_diff >= 15:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                print(f"DELETED EXPIRED: {entry['filename']}")
+        else:
+            new_history.append(entry)
+    
+    save_history(new_history)
+    history = new_history 
+
+    # 2. PICK NEW VIDEO
+    if not os.path.exists(VIDEO_FOLDER):
+        os.makedirs(VIDEO_FOLDER)
+        
+    all_videos = [f for f in os.listdir(VIDEO_FOLDER) if f.lower().endswith(('.mp4', '.mov', '.mkv'))]
+    sent_filenames = [entry['filename'] for entry in history]
+    
+    available_videos = [v for v in all_videos if v not in sent_filenames]
+    
+    if not available_videos:
+        print("No new videos to send.")
+        return
+
+    video_to_send = random.choice(available_videos)
+    video_path = os.path.join(VIDEO_FOLDER, video_to_send)
+    
+    print(f"Selected Video File: {video_to_send}")
+
+    # 3. RANDOM SELECTION (Grid System)
+    selected_title = random.choice(TITLES_GRID)
+    selected_caption = random.choice(CAPTIONS_GRID)
+    
+    # Combine content
+    full_telegram_caption = f"{selected_title}\n\n{selected_caption}\n{FIXED_HASHTAGS}"
+    
+    print(f"Generated Title: {selected_title}")
+    print(f"Generated Caption: {selected_caption}")
+
+    # 4. SEND TO TELEGRAM
+    if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
+        print("Sending to Telegram...")
+        with open(video_path, 'rb') as video_file:
+            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendVideo"
+            payload = {
+                'chat_id': TELEGRAM_CHAT_ID, 
+                'caption': full_telegram_caption
+            }
+            files = {'video': video_file}
+            try:
+                requests.post(url, data=payload, files=files)
+            except Exception as e:
+                print(f"Telegram Error: {e}")
+
+    # 5. SEND TO WEBHOOK
+    if WEBHOOK_URL:
+        print("Sending to Webhook...")
+        # URL construction with your specific repo name
+        raw_video_url = f"https://raw.githubusercontent.com/{GITHUB_REPO}/{BRANCH_NAME}/{VIDEO_FOLDER}/{video_to_send}"
+        # Encode spaces if any
+        raw_video_url = raw_video_url.replace(" ", "%20")
+        
+        webhook_data = {
+            "video_url": raw_video_url,
+            "title": selected_title,
+            "caption": selected_caption,
+            "hashtags": FIXED_HASHTAGS,
+            "insta_hashtags": INSTA_HASHTAGS, # Make.com mein isi naam se field aayegi
+            "source": "AffiliateBot"
+        }
+        try:
+            requests.post(WEBHOOK_URL, json=webhook_data)
+            print(f"Webhook Sent: {raw_video_url}")
+        except Exception as e:
+            print(f"Webhook Error: {e}")
+
+    # 6. UPDATE HISTORY
+    new_history.append({
+        "filename": video_to_send,
+        "date_sent": today.isoformat()
+    })
+    save_history(new_history)
+    print("Automation Complete.")
+
+if __name__ == "__main__":
+    run_automation()
