@@ -319,3 +319,6 @@ def run_automation():
     })
     save_history(new_history)
     print("Automation Complete.")
+
+if __name__ == "__main__":
+    run_automation()
