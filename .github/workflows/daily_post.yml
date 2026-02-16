@@ -25,7 +25,8 @@ jobs:
 
       - name: Execute Script
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          # Yahan name change kiya hai taaki Python script se match kare
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }} 
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
         run: python main.py
