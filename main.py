@@ -252,7 +252,7 @@ def run_automation():
     print(f"Generated Caption: {selected_caption}")
 
     # 4. SEND TO TELEGRAM
-if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
+if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
     print("Sending to Telegram...")
     
     # URL print karke dekhein ki token sahi jagah laga hai ya nahi
@@ -260,7 +260,7 @@ if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
     # print(f"Using Token: {TELEGRAM_BOT_TOKEN[:5]}...") 
 
     with open(video_path, 'rb') as video_file:
-        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendVideo"
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendVideo"
         
         payload = {
             'chat_id': TELEGRAM_CHAT_ID, 
