@@ -176,7 +176,7 @@ FIXED_HASHTAGS = """
 .
 .
 .
-#motivation #selfimprovement #discipline #successmindset #personaldevelopment #growthmindset #mindsetmatters #workethic #stayfocused #nevergiveup #grindmode #hustle #dailygrind #consistency #hardwork #dreambig #goalsetting #levelup #winnersmindset #positivemindset #mentalstrength #focusonyourself #keepgoing #dontquit #believeinyourself #confidenceboost #morningmotivation #lifemotivation #inspirationdaily #motivationalvideo #viral #trending #fyp #foryou #shorts #youtubeshorts #ytshorts #reels #viralreels #shortvideo """
+#motivation #selfimprovement #discipline #successmindset #personaldevelopment #growthmindset #mindsetmatters #workethic #stayfocused #nevergiveup #grindmode #hustle #dailygrind #consistency #hardwork #dreambig #goalsetting #levelup #winnersmindset #positivemindset #mentalstrength #focusonyourself #keepgoing #dontquit #believeinyourself #confidenceboost #morningmotivation #lifemotivation #inspirationdaily #short #motivationalvideo #viral #trending #fyp #foryou #shorts #youtubeshorts #ytshorts #reels #viralreels #shortvideo """
 # Isse AFFILIATE_HASHTAGS se badal kar INSTA_HASHTAGS kar diya hai
 INSTA_HASHTAGS = """
 .
