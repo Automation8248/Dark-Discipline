@@ -188,7 +188,7 @@ YOUTUBE_HASHTAGS = """
 .
 .
 .
-"#youtubeshorts #youtube #shorts #subscribe #viralshorts"
+"#fyp #viral #trending #shorts #reels #explorepage #motivation #mindset #discipline #selfimprovement #nevergiveup #confidence #growthmindset #dailymotivation #successmindset #dreambig #hustle #grind #workethic #millionairemindset #financialfreedom #levelup"
 """
 
 FACEBOOK_HASHTAGS = """
