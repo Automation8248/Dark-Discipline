@@ -182,20 +182,24 @@ INSTA_HASHTAGS = """
 .
 .
 .
-"#viral #fyp #trending #explorepage #ytshorts"
+"#viral #fyp #trending #explorepage ##fyp
+#reels
+#motivation
+#successmindset
+#hustle"
 """
 YOUTUBE_HASHTAGS = """
 .
 .
 .
-"#fyp #viral #trending #shorts #reels #explorepage #motivation #mindset #discipline #selfimprovement #nevergiveup #confidence #growthmindset #dailymotivation #successmindset #dreambig #hustle #grind #workethic #millionairemindset #financialfreedom #levelup"
+"#fyp #viral #trending #short #shorts #reels #explorepage #motivation #ytshorts #mindset #discipline #selfimprovement #nevergiveup #confidence #growthmindset #dailymotivation #successmindset #dreambig #hustle #grind #workethic #millionairemindset #financialfreedom #levelup"
 """
 
 FACEBOOK_HASHTAGS = """
 .
 .
 .
-"#facebookreels #fb #reelsvideo #viralreels #fbreels"
+"#viral #reels #trending #explorepage #fyp #viralreels #watchthis #mustwatch #motivation #mindset #successmindset #discipline #selfimprovement #growthmindset #confidence #nevergiveup #dailymotivation #hustle #grind #entrepreneurlife #financialfreedom #millionairemindset #richmindset #levelup #workethic"
 """
 
 # --- HELPER FUNCTIONS ---
