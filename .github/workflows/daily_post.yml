@@ -2,10 +2,10 @@ name: Daily Video Automation
 
 on:
   schedule:
-    # New York: 5:45 PM (17:45)
-    # UTC: 10:45 PM (22:45)
-    # India (IST): 4:15 AM (Agle din)
-    - cron: '45 22 * * *'
+    # India (IST): 4:46 AM (Today)
+    # New York (EST): 6:16 PM (Yesterday)
+    # UTC (GitHub Time): 11:16 PM (Yesterday)
+    - cron: '16 23 * * *'
   workflow_dispatch:
 
 jobs:
