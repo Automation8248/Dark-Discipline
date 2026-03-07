@@ -205,10 +205,17 @@ FACEBOOK_HASHTAGS = """
 # --- HELPER FUNCTIONS ---
 
 def load_history():
-    if not os.path.exists(HISTORY_FILE):
+    # Fix: Check if file doesn't exist OR if it is empty (0 bytes)
+    if not os.path.exists(HISTORY_FILE) or os.path.getsize(HISTORY_FILE) == 0:
         return []
-    with open(HISTORY_FILE, 'r') as f:
-        return json.load(f)
+        
+    try:
+        with open(HISTORY_FILE, 'r') as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        # Fix: Catch the exact error causing the crash and return an empty list
+        print("Warning: history.json was corrupted or invalid. Starting fresh.")
+        return []
 
 def save_history(data):
     with open(HISTORY_FILE, 'w') as f:
@@ -224,16 +231,21 @@ def run_automation():
     
     print("Checking for expired videos...")
     for entry in history:
-        sent_date = datetime.date.fromisoformat(entry['date_sent'])
-        days_diff = (today - sent_date).days
-        
-        file_path = os.path.join(VIDEO_FOLDER, entry['filename'])
-        
-        if days_diff >= 15:
-            if os.path.exists(file_path):
-                os.remove(file_path)
-                print(f"DELETED EXPIRED: {entry['filename']}")
+        # Check if 'date_sent' exists to prevent errors from old history formats
+        if 'date_sent' in entry:
+            sent_date = datetime.date.fromisoformat(entry['date_sent'])
+            days_diff = (today - sent_date).days
+            
+            file_path = os.path.join(VIDEO_FOLDER, entry['filename'])
+            
+            if days_diff >= 15:
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                    print(f"DELETED EXPIRED: {entry['filename']}")
+            else:
+                new_history.append(entry)
         else:
+            # If the entry is malformed, just keep it to be safe or ignore it
             new_history.append(entry)
     
     save_history(new_history)
@@ -244,7 +256,7 @@ def run_automation():
         os.makedirs(VIDEO_FOLDER)
         
     all_videos = [f for f in os.listdir(VIDEO_FOLDER) if f.lower().endswith(('.mp4', '.mov', '.mkv'))]
-    sent_filenames = [entry['filename'] for entry in history]
+    sent_filenames = [entry.get('filename') for entry in history if 'filename' in entry]
     
     available_videos = [v for v in all_videos if v not in sent_filenames]
     
